@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -17,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import models.User;
 import models.UserSession;
 import javafx.geometry.Insets;
@@ -57,14 +59,73 @@ public class DashboardController {
    private ImageView loadingGif;
 
    private final OkHttpClient client = new OkHttpClient();
+   private List<JSONObject> allPokemonList = new ArrayList<>();
    private int currentPage = 0;
-   private final int pokemonPerPage = 10;
+   private static final int POKEMON_PER_PAGE = 10;
    private int totalPages = 0;
+   private boolean isSearchActive = false;
 
    @FXML
    public void initialize() {
-      loadPokemon(currentPage);
+      loadAllPokemon();
       updatePagination();
+   }
+
+   @FXML
+   private void handleLogout() {
+      try {
+         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Login.fxml"));
+         Parent root = loader.load();
+
+         Scene scene = new Scene(root);
+
+         Stage newStage = new Stage();
+
+         Window currentWindow = searchField.getScene().getWindow();
+         Stage currentStage = (Stage) currentWindow;
+
+         newStage.getIcons().add(new Image("/images/pokeball.png"));
+         newStage.setMaximized(currentStage.isMaximized());
+         newStage.setX(currentStage.getX());
+         newStage.setY(currentStage.getY());
+         newStage.setScene(scene);
+
+         newStage.show();
+         currentStage.close();
+      } catch (Exception e) {
+         showAlert("Error", "No se pudo cerrar sesión.");
+         e.printStackTrace();
+      }
+   }
+
+   private void loadAllPokemon() {
+      loadingGif.setVisible(true);
+
+      CompletableFuture.runAsync(() -> {
+         try {
+            Request request = new Request.Builder().url("https://pokeapi.co/api/v2/pokemon?limit=1000").build();
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+               JSONObject result = new JSONObject(response.body().string());
+               JSONArray pokemonArray = result.getJSONArray("results");
+
+               allPokemonList.clear();
+               for (int i = 0; i < pokemonArray.length(); i++) {
+                  allPokemonList.add(pokemonArray.getJSONObject(i));
+               }
+
+               Platform.runLater(() -> {
+                  totalPages = (int) Math.ceil((double) allPokemonList.size() / POKEMON_PER_PAGE);
+                  loadPokemon(currentPage);
+                  loadingGif.setVisible(false);
+               });
+            }
+         } catch (IOException e) {
+            e.printStackTrace();
+            Platform.runLater(() -> loadingGif.setVisible(false));
+         }
+      });
    }
 
    private void loadPokemon(int page) {
@@ -74,19 +135,16 @@ public class DashboardController {
          @Override
          protected Void call() throws Exception {
             try {
-               Request request = new Request.Builder().url(
-                     "https://pokeapi.co/api/v2/pokemon?offset=" + (page * pokemonPerPage) + "&limit=" + pokemonPerPage)
-                     .build();
+               Request request = new Request.Builder().url("https://pokeapi.co/api/v2/pokemon?offset="
+                     + (page * POKEMON_PER_PAGE) + "&limit=" + POKEMON_PER_PAGE).build();
 
                Response response = client.newCall(request).execute();
                String jsonData = response.body().string();
                JSONObject jsonObject = new JSONObject(jsonData);
                JSONArray results = jsonObject.getJSONArray("results");
 
-               totalPages = (int) Math.ceil((double) jsonObject.getInt("count") / pokemonPerPage);
+               totalPages = (int) Math.ceil((double) jsonObject.getInt("count") / POKEMON_PER_PAGE);
 
-               // Crear una lista de tarjetas de Pokémon para actualizar la UI en una sola
-               // operación
                List<VBox> pokemonCards = new ArrayList<>();
 
                for (int i = 0; i < results.length(); i++) {
@@ -199,40 +257,85 @@ public class DashboardController {
    @FXML
    private void handleSearch() {
       loadingGif.setVisible(true);
-      String searchTerm = searchField.getText().toLowerCase();
+      String searchTerm = searchField.getText().toLowerCase().trim();
 
-      if (!searchTerm.isEmpty()) {
+      isSearchActive = !searchTerm.isEmpty();
+
+      if (isSearchActive) {
          CompletableFuture.runAsync(() -> {
             try {
-               Request request = new Request.Builder().url("https://pokeapi.co/api/v2/pokemon/" + searchTerm).build();
+               Request request = new Request.Builder().url("https://pokeapi.co/api/v2/pokemon?limit=1000").build();
                Response response = client.newCall(request).execute();
 
                if (response.isSuccessful()) {
-                  JSONObject pokemonDetails = new JSONObject(response.body().string());
-                  String imageUrl = pokemonDetails.getJSONObject("sprites").getString("front_default");
+                  JSONObject result = new JSONObject(response.body().string());
+                  JSONArray pokemonArray = result.getJSONArray("results");
 
-                  VBox pokemonCard = createPokemonCard(pokemonDetails.getString("name"),
-                        pokemonDetails.getJSONArray("types"), imageUrl);
+                  List<JSONObject> matchedPokemon = new ArrayList<>();
+
+                  for (int i = 0; i < pokemonArray.length(); i++) {
+                     JSONObject pokemon = pokemonArray.getJSONObject(i);
+                     String pokemonName = pokemon.getString("name");
+
+                     if (pokemonName.startsWith(searchTerm)) {
+                        matchedPokemon.add(pokemon);
+                     }
+                  }
 
                   Platform.runLater(() -> {
-                     pokemonGrid.getChildren().clear();
-                     pokemonGrid.add(pokemonCard, 0, 0);
+                     pokemonGrid.getChildren().clear(); // Limpiar la cuadrícula antes de agregar resultados
+
+                     if (!matchedPokemon.isEmpty()) {
+                        for (int i = 0; i < matchedPokemon.size(); i++) {
+                           final int counter = i;
+                           JSONObject pokemon = matchedPokemon.get(i);
+                           String pokemonName = pokemon.getString("name");
+
+                           CompletableFuture.runAsync(() -> {
+                              try {
+                                 Request pokemonRequest = new Request.Builder().url(pokemon.getString("url")).build();
+                                 Response pokemonResponse = client.newCall(pokemonRequest).execute();
+
+                                 if (pokemonResponse.isSuccessful()) {
+                                    JSONObject pokemonDetails = new JSONObject(pokemonResponse.body().string());
+                                    String imageUrl = pokemonDetails.getJSONObject("sprites")
+                                          .getString("front_default");
+
+                                    VBox pokemonCard = createPokemonCard(pokemonName,
+                                          pokemonDetails.getJSONArray("types"), imageUrl);
+
+                                    Platform.runLater(() -> {
+                                       int col = counter % 5; // 5 columnas por fila
+                                       int row = counter / 5;
+                                       pokemonGrid.add(pokemonCard, col, row);
+                                    });
+                                 }
+                              } catch (IOException e) {
+                                 e.printStackTrace();
+                              }
+                           });
+                        }
+                     } else {
+                        pokemonGrid.add(new Label("No se encontraron Pokémon"), 0, 0);
+                     }
+
                      loadingGif.setVisible(false);
                   });
+
                } else {
                   Platform.runLater(() -> {
                      pokemonGrid.getChildren().clear();
-                     pokemonGrid.add(new Label("Pokémon no encontrado"), 0, 0);
+                     pokemonGrid.add(new Label("Error al buscar Pokémon"), 0, 0);
                      loadingGif.setVisible(false);
                   });
                }
             } catch (IOException e) {
                e.printStackTrace();
-               Platform.runLater(() -> loadingGif.setVisible(true));
+               Platform.runLater(() -> loadingGif.setVisible(false));
             }
          });
       } else {
-         loadPokemon(currentPage);
+         loadPokemon(currentPage); // Si no hay término de búsqueda, volver a la vista normal
       }
    }
 
@@ -371,14 +474,26 @@ public class DashboardController {
    private void openPokedexWindow() {
       try {
          FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Pokedex.fxml"));
-         Scene scene = new Scene(loader.load());
+         Parent root = loader.load();
 
-         Stage stage = new Stage();
-         stage.setTitle("Pokédex");
-         stage.setScene(scene);
-         stage.show();
-      } catch (IOException e) {
-         showAlert("Error", "No se pudo cargar la ventana de la Pokédex.");
+         Scene scene = new Scene(root);
+
+         Stage newStage = new Stage();
+
+         Window currentWindow = searchField.getScene().getWindow();
+         Stage currentStage = (Stage) currentWindow;
+
+         newStage.getIcons().add(new Image("/images/pokeball.png"));
+         newStage.setMaximized(currentStage.isMaximized());
+         newStage.setX(currentStage.getX());
+         newStage.setY(currentStage.getY());
+         newStage.setScene(scene);
+
+         newStage.show();
+         currentStage.close();
+      } catch (Exception e) {
+         showAlert("Error", "No se pudo cargar la pantalla de inicio.");
+         e.printStackTrace();
       }
    }
 

@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import models.User;
@@ -50,32 +51,7 @@ public class LoginController {
 
    @FXML
    private void handleRegister() {
-      try {
-         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Register.fxml"));
-         Parent root = loader.load();
-
-         Scene scene = new Scene(root);
-
-         Stage registerStage = new Stage();
-
-         Window currentWindow = usernameField.getScene().getWindow();
-         Stage currentStage = (Stage) currentWindow;
-
-         registerStage.setMaximized(currentStage.isMaximized());
-
-         registerStage.setX(currentStage.getX());
-         registerStage.setY(currentStage.getY());
-
-         registerStage.setTitle("PokeApp - Registro");
-         registerStage.setScene(scene);
-
-         registerStage.show();
-         
-         currentStage.close();
-
-      } catch (Exception e) {
-         e.printStackTrace();
-      }
+      loadWindow("/views/Register.fxml");
    }
 
    private User validateLogin(String username, String password) {
@@ -107,14 +83,29 @@ public class LoginController {
   }
 
    private void loadDashboard() {
+      loadWindow("/views/DashBoard.fxml");
+   }
+
+   private void loadWindow(String archivo) {
       try {
-         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Dashboard.fxml"));
+         FXMLLoader loader = new FXMLLoader(getClass().getResource(archivo));
          Parent root = loader.load();
 
-         Stage stage = (Stage) usernameField.getScene().getWindow();
-         stage.setScene(new Scene(root));
-         stage.setTitle("PokeApp - Dashboard");
-         stage.setMaximized(true);
+         Scene scene = new Scene(root);
+
+         Stage newStage = new Stage();
+
+         Window currentWindow = usernameField.getScene().getWindow();
+         Stage currentStage = (Stage) currentWindow;
+         
+         newStage.getIcons().add(new Image("/images/pokeball.png"));
+         newStage.setMaximized(currentStage.isMaximized());
+         newStage.setX(currentStage.getX());
+         newStage.setY(currentStage.getY());
+         newStage.setScene(scene);
+
+         newStage.show();
+         currentStage.close();
       } catch (Exception e) {
          showAlert("Error", "No se pudo cargar la pantalla de inicio.");
          e.printStackTrace();

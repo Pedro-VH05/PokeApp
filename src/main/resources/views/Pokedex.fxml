@@ -1,29 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.PokedexController">
-   <children>
-      <VBox alignment="CENTER" spacing="20" AnchorPane.topAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
-         <!-- Logo y nombre de la aplicación -->
-         <ImageView fitWidth="100" fitHeight="100">
-            <image>
-               <Image url="@../images/logo.png" />
-            </image>
-         </ImageView>
-         <Label text="Mi Pokédex">
-            <font>
-               <Font name="Arial" size="24" />
-            </font>
-         </Label>
 
-         <!-- Contenedor de los Pokémon -->
-         <VBox fx:id="pokedexContainer" alignment="CENTER" spacing="10" />
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.PokedexController">
+   <center>
+      <VBox fx:id="mainPokedex" alignment="CENTER" minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" spacing="20">
+      	
+      	<!-- Animación de carga -->
+      	<ImageView fx:id="loadingGif" fitHeight="50" fitWidth="50" visible="false">
+      		<image>
+      			<Image url="@../images/loading.gif" />
+      		</image>
+      	</ImageView>
+      
+      	<!-- Grid para mostrar los Pokémon -->
+      	<GridPane fx:id="pokedexGrid" alignment="CENTER" hgap="20" vgap="20" />
+      
+      	<!-- Botones de paginación -->
+      	<HBox alignment="CENTER" spacing="10">
+      		<HBox fx:id="paginationBox" alignment="CENTER" spacing="5" />
+      	</HBox>
+      	
       </VBox>
-   </children>
-</AnchorPane>
+   </center>
+   <bottom>
+   	
+      	<HBox alignment="BOTTOM_LEFT" BorderPane.alignment="CENTER">
+         <children>
+         		<Button alignment="BOTTOM_LEFT" onAction="#goBackToDashboard" text="Volver al inicio" />
+         </children>
+   	</HBox>
+   </bottom>
+   <top>
+      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+         <children>
+         	<ImageView fitHeight="100" fitWidth="100">
+         		<image>
+         			<Image url="@../images/pokeball.png" />
+         		</image>
+         	</ImageView>
+         	<Label text="Mi Pokédex">
+         		<font>
+         			<Font name="Arial" size="24" />
+         		</font>
+         	</Label>
+         </children>
+      </VBox>
+   </top>
+</BorderPane>

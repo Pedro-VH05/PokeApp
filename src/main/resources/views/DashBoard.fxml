@@ -1,60 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.geometry.Pos?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.image.Image?>
-
-<VBox xmlns="http://javafx.com/javafx/8"
-	xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="controllers.DashboardController" spacing="10"
-	alignment="CENTER">
-	<padding>
-		<Insets top="10" right="10" bottom="10" left="10" />
-	</padding>
-
-	<!-- Imagen con el Label "PokeApp" encima -->
-	<VBox alignment="CENTER" layoutX="288.0" layoutY="41.0">
-		<children>
-			<ImageView fitHeight="150.0" fitWidth="200.0"
-				pickOnBounds="true" preserveRatio="true">
-				<image>
-					<Image url="@../images/pokeball.png" />
-				</image>
-			</ImageView>
-			<Label text="PokeApp" />
-		</children>
-	</VBox>
-
-	<!-- Barra de búsqueda -->
-	<HBox spacing="10" alignment="CENTER">
-		<TextField fx:id="searchField"
-			promptText="Buscar Pokémon por nombre" prefWidth="300" />
-		<Button text="Buscar" onAction="#handleSearch" />
-		<Button text="Ver Pokédex" onAction="#openPokedexWindow" />
-	</HBox>
-
-	<!-- GIF de carga -->
-	<ImageView fx:id="loadingGif" fitHeight="50" fitWidth="50"
-		visible="false">
-		<image>
-			<Image url="@../images/loading.gif" />
-		</image>
-	</ImageView>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
 
-	<!-- Grid para mostrar los Pokémon -->
-	<GridPane fx:id="pokemonGrid" hgap="20" vgap="20"
-		alignment="CENTER" />
-
-	<!-- Botones de paginación -->
-	<HBox spacing="10" alignment="CENTER">
-		<HBox fx:id="paginationBox" spacing="5" alignment="CENTER" />
-	</HBox>
-</VBox>
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DashboardController">
+   <center>
+      <VBox alignment="CENTER" minHeight="600.0" minWidth="800.0" spacing="10">
+      	<padding>
+      		<Insets bottom="10" left="10" right="10" top="10" />
+      	</padding>
+      
+      	<!-- GIF de carga -->
+      	<ImageView fx:id="loadingGif" fitHeight="50" fitWidth="50" visible="false">
+      		<image>
+      			<Image url="@../images/loading.gif" />
+      		</image>
+      	</ImageView>
+      
+      	<!-- Barra de búsqueda -->
+      	<HBox alignment="CENTER" spacing="10">
+      		<Button onAction="#openPokedexWindow" text="Ver Pokédex" />
+      		<TextField fx:id="searchField" prefWidth="300" promptText="Buscar Pokémon por nombre" />
+      		<Button onAction="#handleSearch" text="Buscar" />
+      	</HBox>
+      
+      	<!-- Grid para mostrar los Pokémon -->
+      	<GridPane fx:id="pokemonGrid" alignment="CENTER" hgap="20" vgap="20" />
+      
+      	<!-- Botones de paginación -->
+      	<HBox alignment="CENTER" spacing="10">
+      		<HBox fx:id="paginationBox" alignment="CENTER" spacing="5" />
+      	</HBox>
+      </VBox>
+   </center>
+   <bottom>
+   
+      	<HBox alignment="BOTTOM_LEFT" BorderPane.alignment="CENTER">
+   		<Button onAction="#handleLogout" text="Cerrar Sesión" />
+   	</HBox>
+   </bottom>
+   <top>
+   
+      	<!-- Imagen con el Label "PokeApp" encima -->
+   	<VBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
+   		<children>
+   			<ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+   				<image>
+   					<Image url="@../images/pokeball.png" />
+   				</image>
+   			</ImageView>
+   			<Label text="PokeApp" />
+   		</children>
+   	</VBox>
+   </top>
+</BorderPane>
