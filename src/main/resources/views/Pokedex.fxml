@@ -33,7 +33,6 @@
       </VBox>
    </center>
    <bottom>
-   	
       	<HBox alignment="BOTTOM_LEFT" BorderPane.alignment="CENTER">
          <children>
          		<Button alignment="BOTTOM_LEFT" onAction="#goBackToDashboard" text="Volver al inicio" />

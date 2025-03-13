@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.PokemonDetailsController">
+   <bottom>
+      <Button alignment="CENTER" onAction="#goBackToDashboard" mnemonicParsing="false" text="Volver al inicio" BorderPane.alignment="CENTER_LEFT" />
+   </bottom>
+   <center>
+      <VBox alignment="CENTER" minHeight="600.0" minWidth="800.0" spacing="10" BorderPane.alignment="CENTER">
+          <ImageView fx:id="pokemonImage" fitHeight="150" fitWidth="150" />
+          <Label fx:id="pokemonName" />
+          <HBox fx:id="typesBox" alignment="CENTER" spacing="5" />
+         <HBox alignment="CENTER" spacing="30.0">
+            <children>
+                
+                   <!-- Sección de Habilidades -->
+                <Label text="Habilidades:" />
+                <HBox fx:id="abilitiesBox" alignment="CENTER" spacing="5" />
+            </children>
+         </HBox>
+         <HBox alignment="CENTER" spacing="30.0">
+            <children>
+                
+                   <!-- Sección de Estadísticas Base -->
+                <Label text="Estadísticas Base:" />
+                <GridPane fx:id="statsGrid" alignment="CENTER" hgap="10" vgap="5" />
+            </children>
+         </HBox>
+         <HBox alignment="CENTER" spacing="30.0">
+            <children>
+                
+                   <!-- Sección de Descripción -->
+                <Label text="Descripción:" />
+                <Text fx:id="descriptionText" wrappingWidth="386.59996223449707" />
+            </children>
+         </HBox>
+          
+             <!-- Sección de Evoluciones -->
+          <Label text="Evoluciones:" />
+          <GridPane fx:id="evolutionGrid" alignment="CENTER" hgap="10" vgap="10" />
+      </VBox>
+   </center>
+</BorderPane>

@@ -10,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -81,6 +80,35 @@ public class PokedexController {
             showAlert("Error", "No se pudo cargar el Dashboard.");
             e.printStackTrace();
         }
+    }
+    
+    private void openPokemonDetailsWindow(String pokemonName) {
+       try {
+          FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/PokemonDetails.fxml"));
+          Parent root = loader.load();
+
+          Scene scene = new Scene(root);
+
+          Stage newStage = new Stage();
+
+          Window currentWindow = mainPokedex.getScene().getWindow();
+          Stage currentStage = (Stage) currentWindow;
+          
+          PokemonDetailsController controller = loader.getController();
+          controller.setPokemonName(pokemonName);
+
+          newStage.getIcons().add(new Image("/images/pokeball.png"));
+          newStage.setMaximized(currentStage.isMaximized());
+          newStage.setX(currentStage.getX());
+          newStage.setY(currentStage.getY());
+          newStage.setScene(scene);
+
+          newStage.show();
+          currentStage.close();
+       } catch (Exception e) {
+          showAlert("Error", "No se pudo cargar la pantalla de inicio.");
+          e.printStackTrace();
+       }
     }
 
     private void loadUserPokedex(int page) {
@@ -161,6 +189,9 @@ public class PokedexController {
        // Contenedor para los tipos
        HBox typeImagesBox = new HBox(5);
        typeImagesBox.setAlignment(Pos.CENTER);
+       
+       Button detailsButton = new Button("Ver Detalles");
+       detailsButton.setOnAction(e -> openPokemonDetailsWindow(name));
 
        // Dividir el texto de tipos y cargar las imágenes correspondientes
        String[] types = type.split(", ");
@@ -176,7 +207,7 @@ public class PokedexController {
        }
 
        // Agregar elementos al card
-       card.getChildren().addAll(imageView, nameLabel, typeImagesBox);
+       card.getChildren().addAll(imageView, nameLabel, typeImagesBox, detailsButton);
 
        return card;
    }

@@ -84,28 +84,28 @@ public class RegisterController {
       }
    }
 
-   private boolean isValidName(String name) {
+   boolean isValidName(String name) {
       // Solo letras (mayúsculas y minúsculas)
       return name.matches("[a-zA-Z]+");
    }
 
-   private boolean isValidUsername(String username) {
+   boolean isValidUsername(String username) {
       // Letras, números o barra baja (_) y al menos 4 caracteres
       return username.matches("^[a-zA-Z0-9_]{4,}$");
    }
 
-   private boolean isValidEmail(String email) {
+   boolean isValidEmail(String email) {
       // Validación básica de correo electrónico
       return email.matches("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
    }
 
-   private boolean isValidPassword(String password) {
+   boolean isValidPassword(String password) {
       // Al menos una letra mayúscula, una letra minúscula, un número y un carácter
       // especial
       return password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
    }
 
-   private boolean isUsernameTaken(String username) {
+   boolean isUsernameTaken(String username) {
       String query = "SELECT COUNT(*) FROM usuario WHERE username = ?";
 
       try (Connection conn = BBDDUtils.getConnection(); // Usar BBDDUtils para la conexión
@@ -123,7 +123,7 @@ public class RegisterController {
       return false;
    }
 
-   private boolean isEmailTaken(String email) {
+   boolean isEmailTaken(String email) {
       String query = "SELECT COUNT(*) FROM usuario WHERE email = ?";
 
       try (Connection conn = BBDDUtils.getConnection(); // Usar BBDDUtils para la conexión
@@ -141,7 +141,7 @@ public class RegisterController {
       return false;
    }
 
-   private boolean registerUser(String name, String username, String email, String password) {
+   boolean registerUser(String name, String username, String email, String password) {
       String query = "INSERT INTO usuario (name, username, email, password) VALUES (?, ?, ?, ?)";
 
       try (Connection conn = BBDDUtils.getConnection(); // Usar BBDDUtils para la conexión

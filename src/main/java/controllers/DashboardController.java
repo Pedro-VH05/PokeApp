@@ -207,6 +207,14 @@ public class DashboardController {
 
       checkIfPokemonInPokedex(name, togglePokedexButton, imageUrl, types);
 
+      // Botón para ver detalles del Pokémon
+      Button detailsButton = new Button("Ver Detalles");
+      detailsButton.setOnAction(e -> openPokemonDetailsWindow(name));
+      
+      HBox buttonBox = new HBox(10); // Contenedor para los botones
+      buttonBox.setAlignment(Pos.CENTER);
+      buttonBox.getChildren().addAll(togglePokedexButton, detailsButton);
+
       ImageView imageView = new ImageView();
       imageView.setFitWidth(100);
       imageView.setFitHeight(100);
@@ -216,9 +224,38 @@ public class DashboardController {
          Platform.runLater(() -> imageView.setImage(image));
       });
 
-      card.getChildren().addAll(imageView, nameLabel, typeImagesBox, togglePokedexButton);
+      card.getChildren().addAll(imageView, nameLabel, typeImagesBox, buttonBox);
 
       return card;
+   }
+
+   private void openPokemonDetailsWindow(String pokemonName) {
+      try {
+         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/PokemonDetails.fxml"));
+         Parent root = loader.load();
+
+         Scene scene = new Scene(root);
+
+         Stage newStage = new Stage();
+
+         Window currentWindow = searchField.getScene().getWindow();
+         Stage currentStage = (Stage) currentWindow;
+         
+         PokemonDetailsController controller = loader.getController();
+         controller.setPokemonName(pokemonName);
+
+         newStage.getIcons().add(new Image("/images/pokeball.png"));
+         newStage.setMaximized(currentStage.isMaximized());
+         newStage.setX(currentStage.getX());
+         newStage.setY(currentStage.getY());
+         newStage.setScene(scene);
+
+         newStage.show();
+         currentStage.close();
+      } catch (Exception e) {
+         showAlert("Error", "No se pudo cargar la pantalla de inicio.");
+         e.printStackTrace();
+      }
    }
 
    private void updatePagination() {
@@ -423,11 +460,11 @@ public class DashboardController {
             Platform.runLater(() -> {
                if (isPokemonInPokedex) {
                   // El Pokémon ya está en la Pokédex, cambiar el texto y acción del botón
-                  togglePokedexButton.setText("Eliminar de la Pokédex");
+                  togglePokedexButton.setText("Eliminar");
                   togglePokedexButton.setOnAction(e -> removePokemonFromPokedex(pokemonName));
                } else {
                   // El Pokémon no está en la Pokédex, mostrar el botón de añadir
-                  togglePokedexButton.setText("Añadir a la Pokédex");
+                  togglePokedexButton.setText("Añadir");
                   togglePokedexButton.setOnAction(e -> addPokemonToPokedex(pokemonName, imageUrl, types));
                }
             });
