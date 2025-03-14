@@ -197,36 +197,43 @@ public class PokemonDetailsController {
       Request request = new Request.Builder().url(evolutionChainUrl).build();
 
       try (Response response = client.newCall(request).execute()) {
-         if (response.isSuccessful()) {
-            JSONObject evolutionChain = new JSONObject(response.body().string());
-            JSONObject chain = evolutionChain.getJSONObject("chain");
-            List<String> evolutionLine = new ArrayList<>();
-            extractEvolutionLine(chain, evolutionLine);
+          if (response.isSuccessful()) {
+              JSONObject evolutionChain = new JSONObject(response.body().string());
+              JSONObject chain = evolutionChain.getJSONObject("chain");
+              List<String> evolutionLine = new ArrayList<>();
+              extractEvolutionLine(chain, evolutionLine);
 
-            evolutionGrid.getChildren().clear();
-            for (int i = 0; i < evolutionLine.size(); i++) {
-               String pokemonName = evolutionLine.get(i);
-               ImageView imageView = new ImageView();
-               imageView.setFitWidth(100);
-               imageView.setFitHeight(100);
+              evolutionGrid.getChildren().clear();
+              for (int i = 0; i < evolutionLine.size(); i++) {
+                  String pokemonName = evolutionLine.get(i);
+                  ImageView imageView = new ImageView();
+                  imageView.setFitWidth(100);
+                  imageView.setFitHeight(100);
 
-               String imageUrl = "https://pokeapi.co/api/v2/pokemon/" + pokemonName;
-               Request pokemonRequest = new Request.Builder().url(imageUrl).build();
-               Response pokemonResponse = client.newCall(pokemonRequest).execute();
+                  // Crear un Label para el nombre del Pokémon
+                  Label nameLabel = new Label(pokemonName);
+                  nameLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
 
-               if (pokemonResponse.isSuccessful()) {
-                  JSONObject pokemonDetails = new JSONObject(pokemonResponse.body().string());
-                  String image = pokemonDetails.getJSONObject("sprites").getString("front_default");
-                  imageView.setImage(new Image(image));
-               }
+                  // Obtener la imagen del Pokémon
+                  String imageUrl = "https://pokeapi.co/api/v2/pokemon/" + pokemonName;
+                  Request pokemonRequest = new Request.Builder().url(imageUrl).build();
+                  Response pokemonResponse = client.newCall(pokemonRequest).execute();
 
-               evolutionGrid.add(imageView, i, 0);
-            }
-         }
+                  if (pokemonResponse.isSuccessful()) {
+                      JSONObject pokemonDetails = new JSONObject(pokemonResponse.body().string());
+                      String image = pokemonDetails.getJSONObject("sprites").getString("front_default");
+                      imageView.setImage(new Image(image));
+                  }
+
+                  // Agregar la imagen y el nombre al GridPane
+                  evolutionGrid.add(imageView, i, 0); // Imagen en la fila 0
+                  evolutionGrid.add(nameLabel, i, 1); // Nombre en la fila 1
+              }
+          }
       } catch (IOException e) {
-         e.printStackTrace();
+          e.printStackTrace();
       }
-   }
+  }
 
    private void extractEvolutionLine(JSONObject chain, List<String> evolutionLine) {
       evolutionLine.add(chain.getJSONObject("species").getString("name"));

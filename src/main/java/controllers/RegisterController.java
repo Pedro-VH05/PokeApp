@@ -29,6 +29,9 @@ public class RegisterController {
 
    @FXML
    private PasswordField passwordField;
+   
+   @FXML
+   private PasswordField repeatPasswordField;
 
    @FXML
    private void handleRegister(ActionEvent event) {
@@ -36,6 +39,7 @@ public class RegisterController {
       String username = usernameField.getText();
       String email = emailField.getText();
       String password = passwordField.getText();
+      String repeatPassword = repeatPasswordField.getText();
 
       if (name.isEmpty() || username.isEmpty() || email.isEmpty() || password.isEmpty()) {
          showAlert("Error", "Todos los campos son obligatorios.");
@@ -63,6 +67,12 @@ public class RegisterController {
                "La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.");
          return;
       }
+      
+      if (!isPasswordRepeat(password, repeatPassword)) {
+         showAlert("Error",
+               "Las contraseñas no coinciden.");
+         return;
+      }
 
       // Verificar si el nombre de usuario ya está registrado
       if (isUsernameTaken(username)) {
@@ -85,8 +95,8 @@ public class RegisterController {
    }
 
    boolean isValidName(String name) {
-      // Solo letras (mayúsculas y minúsculas)
-      return name.matches("[a-zA-Z]+");
+      name = name.trim();
+      return !name.isEmpty() && name.matches("[a-zA-Z ]+");
    }
 
    boolean isValidUsername(String username) {
@@ -103,6 +113,10 @@ public class RegisterController {
       // Al menos una letra mayúscula, una letra minúscula, un número y un carácter
       // especial
       return password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
+   }
+   
+   boolean isPasswordRepeat(String password, String repeatPassword) {
+      return password.equals(repeatPassword) ? true : false;
    }
 
    boolean isUsernameTaken(String username) {

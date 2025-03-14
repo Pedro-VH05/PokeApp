@@ -78,10 +78,20 @@
                   <PasswordField fx:id="passwordField" prefWidth="240.0" promptText="Ingresa tu contraseña" styleClass="password-field" />
             </children>
          </HBox>
+         <HBox alignment="CENTER_RIGHT" prefWidth="500.0">
+            <children>
+               <Label styleClass="label" text="Repite contraseña:">
+                  <HBox.margin>
+                     <Insets right="30.0" />
+                  </HBox.margin>
+               </Label>
+               <PasswordField fx:id="repeatPasswordField" prefWidth="240.0" promptText="Repite tu contraseña" styleClass="password-field" />
+            </children>
+         </HBox>
          <HBox alignment="CENTER">
             <children>
          
-                              <Button id="registerButton" fx:id="backButton" onAction="#handleBack" styleClass="button" text="Volver al Login">
+                              <Button fx:id="backButton" onAction="#handleBack" styleClass="button" text="Volver al Login">
                   <HBox.margin>
                      <Insets />
                   </HBox.margin>
