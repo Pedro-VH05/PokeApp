@@ -88,16 +88,16 @@
                <PasswordField fx:id="repeatPasswordField" prefWidth="240.0" promptText="Repite tu contraseña" styleClass="password-field" />
             </children>
          </HBox>
-         <HBox alignment="CENTER">
+         <HBox alignment="CENTER" spacing="30.0">
             <children>
          
-                              <Button fx:id="backButton" onAction="#handleBack" styleClass="button" text="Volver al Login">
+                              <Button fx:id="goBackToLogin" onAction="#handleBack" styleClass="button" text="Volver al Login">
                   <HBox.margin>
                      <Insets />
                   </HBox.margin>
                </Button>
       
-                                 <Button fx:id="registerButton" onAction="#handleRegister" styleClass="button" text="Registrarse">
+                                 <Button fx:id="registerUser" onAction="#handleRegister" styleClass="button" text="Registrarse">
                   <HBox.margin>
                      <Insets />
                   </HBox.margin>

@@ -226,8 +226,8 @@ public class PokemonDetailsController {
                   }
 
                   // Agregar la imagen y el nombre al GridPane
-                  evolutionGrid.add(imageView, i, 0); // Imagen en la fila 0
-                  evolutionGrid.add(nameLabel, i, 1); // Nombre en la fila 1
+                  evolutionGrid.add(imageView, i, 0);
+                  evolutionGrid.add(nameLabel, i, 1);
               }
           }
       } catch (IOException e) {

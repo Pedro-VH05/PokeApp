@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DashboardController">
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DashboardController" stylesheets="/styles/DashBoardStyles.css">
    <center>
       <VBox alignment="CENTER" minHeight="600.0" minWidth="800.0" spacing="10">
       	<padding>
@@ -20,7 +20,7 @@
       	</padding>
       
       	<!-- GIF de carga -->
-      	<ImageView fx:id="loadingGif" fitHeight="50" fitWidth="50" visible="false">
+      	<ImageView fx:id="loadingGif" fitHeight="40" fitWidth="40" visible="false">
       		<image>
       			<Image url="@../images/loading.gif" />
       		</image>
@@ -49,16 +49,14 @@
    	</HBox>
    </bottom>
    <top>
-   
-      	<!-- Imagen con el Label "PokeApp" encima -->
    	<VBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
    		<children>
-   			<ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+   			<ImageView fitHeight="120.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true">
    				<image>
    					<Image url="@../images/pokeball.png" />
    				</image>
    			</ImageView>
-   			<Label text="PokeApp" />
+   			<Label fx:id="titleLabel" text="PokeApp" />
    		</children>
    	</VBox>
    </top>

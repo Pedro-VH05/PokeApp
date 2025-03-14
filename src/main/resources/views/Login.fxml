@@ -28,7 +28,7 @@
    <!-- Center: Formulario de inicio de sesión -->
    <center>
       <VBox alignment="CENTER" fillWidth="false" spacing="20.0">
-         <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Inicio de Sesión">
+         <Label fx:id="inicioSesionTitle" text="Inicio de Sesión">
             <padding>
                <Insets top="-10.0" />
             </padding>

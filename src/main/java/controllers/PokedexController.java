@@ -179,7 +179,6 @@ public class PokedexController {
 
        // Nombre del Pokémon
        Label nameLabel = new Label(name);
-       nameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 
        // Imagen del Pokémon
        ImageView imageView = new ImageView(new Image(imageUrl));
@@ -228,7 +227,7 @@ public class PokedexController {
             Button pageButton = new Button(String.valueOf(i));
             pageButton.setOnAction(e -> handlePageChange(pageIndex));
             if (pageIndex == currentPage) {
-                pageButton.setStyle("-fx-background-color: #cccccc;");
+                pageButton.setStyle("-fx-background-color: #A90000;");
             }
             paginationBox.getChildren().add(pageButton);
         }

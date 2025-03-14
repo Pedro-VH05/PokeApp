@@ -189,7 +189,6 @@ public class DashboardController {
             "-fx-border-color: #cccccc; -fx-border-width: 1px; -fx-border-radius: 5px; -fx-background-color: #f9f9f9;");
 
       Label nameLabel = new Label(name);
-      nameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 
       HBox typeImagesBox = new HBox(5);
       typeImagesBox.setAlignment(Pos.CENTER);
@@ -216,8 +215,8 @@ public class DashboardController {
       buttonBox.getChildren().addAll(togglePokedexButton, detailsButton);
 
       ImageView imageView = new ImageView();
-      imageView.setFitWidth(100);
-      imageView.setFitHeight(100);
+      imageView.setFitWidth(80);
+      imageView.setFitHeight(80);
 
       CompletableFuture.runAsync(() -> {
          Image image = new Image(imageUrl, true);
@@ -274,7 +273,7 @@ public class DashboardController {
          Button pageButton = new Button(String.valueOf(i));
          pageButton.setOnAction(e -> handlePageChange(pageIndex));
          if (pageIndex == currentPage) {
-            pageButton.setStyle("-fx-background-color: #cccccc;");
+            pageButton.setStyle("-fx-background-color: #A90000;");
          }
          paginationBox.getChildren().add(pageButton);
       }

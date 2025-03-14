@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.PokedexController">
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.PokedexController" stylesheets="/styles/PokedexStyles.css">
    <center>
       <VBox fx:id="mainPokedex" alignment="CENTER" minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" spacing="20">
       	
@@ -47,7 +47,7 @@
          			<Image url="@../images/pokeball.png" />
          		</image>
          	</ImageView>
-         	<Label text="Mi Pokédex">
+         	<Label fx:id="titleLabel" text="Mi Pokédex">
          		<font>
          			<Font name="Arial" size="24" />
          		</font>

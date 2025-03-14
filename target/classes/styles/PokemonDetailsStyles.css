@@ -39,16 +39,16 @@
 }
 
 .button:hover {
-    -fx-background-color: #D60303; /* Verde más oscuro en hover */
+    -fx-background-color: #D60303;
 }
 
 .button:pressed {
-    -fx-background-color: #A90000; /* Verde aún más oscuro al hacer clic */
+    -fx-background-color: #A90000;
 }
 
 /* Fondo de los formularios */
 .vbox {
-    -fx-background-color: #ffffff; /* Fondo blanco */
+    -fx-background-color: #ffffff;
     -fx-border-radius: 10px;
     -fx-padding: 40px;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 15, 0.8, 0, 5);
@@ -64,9 +64,4 @@
     -fx-font-weight: bold;
     -fx-text-fill: #FF1616;
     -fx-font-family: 'Bangers';
-}
-
-/* Estilo de los textos del formulario */
-.prompt-text {
-    -fx-text-fill: #888888;
 }

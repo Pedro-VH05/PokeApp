@@ -1,0 +1,72 @@
+@font-face {
+	src: url('../fonts/Bangers-Regular.ttf');
+	font-weight: normal;
+}
+
+@font-face {
+	src: url('../fonts/WorkSans-VariableFont_wght.ttf');
+	font-weight: normal;
+}
+
+/* Estilos generales para los formularios */
+.root {
+    -fx-font-family: 'WorkSans';
+    -fx-background-color: linear-gradient(
+    from 0% 50% to 100% 50%, 
+    rgba(255, 255, 255, 1) 0%, 
+    rgba(255, 243, 243, 1) 73%, 
+    rgba(255, 117, 117, 1) 86%, 
+    rgba(255, 0, 0, 1) 95%
+	);
+}
+
+/* Títulos */
+.label {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333; /* Gris oscuro para el texto */
+}
+
+/* Botones */
+.button {
+    -fx-background-color: #FF1616;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-padding: 5px 5px;
+    -fx-border-radius: 8px;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease;
+}
+
+.button:hover {
+    -fx-background-color: #D60303; /* Verde más oscuro en hover */
+}
+
+.button:pressed {
+    -fx-background-color: #A90000; /* Verde aún más oscuro al hacer clic */
+}
+
+/* Fondo de los formularios */
+.vbox {
+    -fx-background-color: #ffffff; /* Fondo blanco */
+    -fx-border-radius: 10px;
+    -fx-padding: 40px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 15, 0.8, 0, 5);
+}
+
+/* Logo y título */
+#logo {
+    -fx-padding: 10px;
+}
+
+#titleLabel {
+    -fx-font-size: 40px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FF1616;
+    -fx-font-family: 'Bangers';
+}
+
+/* Estilo de los textos del formulario */
+.prompt-text {
+    -fx-text-fill: #888888;
+}
